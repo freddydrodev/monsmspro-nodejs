@@ -5,11 +5,7 @@ import { MonSMSPRO } from "@freddydrodev/monsmspro";
 export default async function Home() {
   const sms = new MonSMSPRO("");
 
-  const res = await sms.otp.verify({
-    phoneNumber: "22500000000",
-    otp: "",
-    token: "",
-  });
+  const res = await sms.user.credit();
 
   return (
     <div className={styles.page}>

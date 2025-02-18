@@ -10,7 +10,9 @@ type ApiResponse<T = any> = {
     data: T;
 };
 type CleanSChemaType<T extends ZodObject<any>> = Omit<z.input<T>, "apiKey" | "adminKey">;
-type ModelMethodType<T extends ZodObject<any>, K = any> = (args: CleanSChemaType<T>) => Promise<ApiResponse<K>>;
+type ModelMethodTypeWithArgs<T extends ZodObject<any>, K = any> = (args: CleanSChemaType<T>) => Promise<ApiResponse<K>>;
+type ModelMethodTypeWithoutArgs<K = any> = () => Promise<ApiResponse<K>>;
+type ModelMethodType<T extends ZodObject<any>, K = any> = ModelMethodTypeWithArgs<T, K> | ModelMethodTypeWithoutArgs<K>;
 type BaseModelCallApiType<T extends ZodObject<any>, K = any> = (path: string) => ModelMethodType<T, K>;
 
 declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
@@ -23,8 +25,8 @@ declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
     senderId: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     appName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }>, "strip", z.ZodTypeAny, {
-    apiKey: string;
     length: number;
+    apiKey: string;
     phoneNumber: string;
     mode: "NUMERIC" | "ALPHABET" | "ALPHA_NUMERIC";
     adminKey?: string | null | undefined;
@@ -33,8 +35,8 @@ declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
 }, {
     apiKey: string;
     phoneNumber: string;
-    adminKey?: string | null | undefined;
     length?: number | undefined;
+    adminKey?: string | null | undefined;
     mode?: "NUMERIC" | "ALPHABET" | "ALPHA_NUMERIC" | undefined;
     senderId?: string | null | undefined;
     appName?: string | null | undefined;
@@ -56,9 +58,9 @@ declare const verifyOTPSchema: z.ZodObject<{
 declare class BaseModel {
     protected apiKey: string;
     protected baseUrl: string;
-    axios: typeof Axios;
+    protected axios: typeof Axios;
     constructor(args: ModelBaseArgs);
-    callApi: BaseModelCallApiType<any, any>;
+    protected callApi: BaseModelCallApiType<any, any>;
 }
 
 declare class OtpModel extends BaseModel {
@@ -67,10 +69,16 @@ declare class OtpModel extends BaseModel {
     verify: ModelMethodType<typeof verifyOTPSchema>;
 }
 
+declare class UserModel extends BaseModel {
+    private path;
+    credit: ModelMethodTypeWithoutArgs<any>;
+}
+
 declare class MonSMSPRO {
     private baseUrl;
     private apiKey;
     otp: OtpModel;
+    user: UserModel;
     constructor(apiKey: string);
 }
 

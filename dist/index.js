@@ -104,12 +104,24 @@ var OtpModel = class extends BaseModel {
   }
 };
 
+// src/models/User.ts
+var UserModel = class extends BaseModel {
+  constructor() {
+    super(...arguments);
+    this.path = "/user";
+    this.credit = () => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/credit")();
+    });
+  }
+};
+
 // src/index.ts
 var MonSMSPRO = class {
   constructor(apiKey) {
     this.baseUrl = "https://rest.monsmspro.com/api";
     this.apiKey = apiKey;
     this.otp = new OtpModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
+    this.user = new UserModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

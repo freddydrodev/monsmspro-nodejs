@@ -6,7 +6,7 @@ export class BaseModel {
 
   protected baseUrl: string;
 
-  public axios: typeof Axios;
+  protected axios: typeof Axios;
 
   constructor(args: ModelBaseArgs) {
     this.apiKey = args.apiKey;
@@ -14,7 +14,7 @@ export class BaseModel {
     this.axios = Axios;
   }
 
-  callApi: BaseModelCallApiType<any, any> = (path) => {
+  protected callApi: BaseModelCallApiType<any, any> = (path) => {
     const func: ModelMethodType<any, any> = async (args) => {
       const response = await this.axios.post(`${this.baseUrl}${path}`, {
         ...args,

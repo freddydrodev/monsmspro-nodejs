@@ -15,9 +15,15 @@ export type CleanSChemaType<T extends ZodObject<any>> = Omit<
   "apiKey" | "adminKey"
 >;
 
-export type ModelMethodType<T extends ZodObject<any>, K = any> = (
+export type ModelMethodTypeWithArgs<T extends ZodObject<any>, K = any> = (
   args: CleanSChemaType<T>
 ) => Promise<ApiResponse<K>>;
+
+export type ModelMethodTypeWithoutArgs<K = any> = () => Promise<ApiResponse<K>>;
+
+export type ModelMethodType<T extends ZodObject<any>, K = any> =
+  | ModelMethodTypeWithArgs<T, K>
+  | ModelMethodTypeWithoutArgs<K>;
 
 export type BaseModelCallApiType<T extends ZodObject<any>, K = any> = (
   path: string
