@@ -104,6 +104,23 @@ var OtpModel = class extends BaseModel {
   }
 };
 
+// src/models/Sender.ts
+var SenderModel = class extends BaseModel {
+  constructor() {
+    super(...arguments);
+    this.path = "/sender";
+    this.create = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/create")(args);
+    });
+    this.list = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/list")(args);
+    });
+    this.campains = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/" + args.id + "/campain")(args);
+    });
+  }
+};
+
 // src/models/User.ts
 var UserModel = class extends BaseModel {
   constructor() {
@@ -122,6 +139,10 @@ var MonSMSPRO = class {
     this.apiKey = apiKey;
     this.otp = new OtpModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
     this.user = new UserModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
+    this.sender = new SenderModel({
+      apiKey: this.apiKey,
+      baseUrl: this.baseUrl
+    });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

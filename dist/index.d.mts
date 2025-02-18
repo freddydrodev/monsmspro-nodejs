@@ -69,6 +69,69 @@ declare class OtpModel extends BaseModel {
     verify: ModelMethodType<typeof verifyOTPSchema>;
 }
 
+declare const createSender: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    name: z.ZodString;
+    description: z.ZodString;
+}>, "strip", z.ZodTypeAny, {
+    apiKey: string;
+    name: string;
+    description: string;
+    adminKey?: string | null | undefined;
+}, {
+    apiKey: string;
+    name: string;
+    description: string;
+    adminKey?: string | null | undefined;
+}>;
+declare const getSenderList: z.ZodObject<z.objectUtil.extendShape<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    count: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    page: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    sort: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+}>, {
+    orderBy: z.ZodDefault<z.ZodEnum<["name", "createdAt"]>>;
+}>, "strip", z.ZodTypeAny, {
+    sort: "asc" | "desc";
+    apiKey: string;
+    orderBy: "name" | "createdAt";
+    adminKey?: string | null | undefined;
+    count?: number | null | undefined;
+    page?: number | null | undefined;
+}, {
+    apiKey: string;
+    sort?: "asc" | "desc" | undefined;
+    adminKey?: string | null | undefined;
+    count?: number | null | undefined;
+    page?: number | null | undefined;
+    orderBy?: "name" | "createdAt" | undefined;
+}>;
+declare const getSender: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    id: z.ZodString;
+}>, "strip", z.ZodTypeAny, {
+    apiKey: string;
+    id: string;
+    adminKey?: string | null | undefined;
+}, {
+    apiKey: string;
+    id: string;
+    adminKey?: string | null | undefined;
+}>;
+
+declare class SenderModel extends BaseModel {
+    private path;
+    create: ModelMethodType<typeof createSender>;
+    list: ModelMethodType<typeof getSenderList>;
+    campains: ModelMethodType<typeof getSender>;
+}
+
 declare class UserModel extends BaseModel {
     private path;
     credit: ModelMethodTypeWithoutArgs<any>;
@@ -79,6 +142,7 @@ declare class MonSMSPRO {
     private apiKey;
     otp: OtpModel;
     user: UserModel;
+    sender: SenderModel;
     constructor(apiKey: string);
 }
 

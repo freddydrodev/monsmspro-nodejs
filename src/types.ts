@@ -28,3 +28,7 @@ export type ModelMethodType<T extends ZodObject<any>, K = any> =
 export type BaseModelCallApiType<T extends ZodObject<any>, K = any> = (
   path: string
 ) => ModelMethodType<T, K>;
+
+export type SchemaWithId<T extends ZodObject<any>> = z.infer<T> & {
+  id: string;
+};

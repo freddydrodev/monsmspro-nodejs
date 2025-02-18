@@ -11,7 +11,9 @@ export const getSenderList = baseListSchema.extend({
   orderBy: z.enum(["name", "createdAt"]).default("createdAt"),
 });
 
-export const getSender = baseSchema.extend({});
+export const getSender = baseSchema.extend({
+  id: z.string(),
+});
 
 export const updateSender = baseSchema.extend({
   archived: z.boolean().nullish(),
