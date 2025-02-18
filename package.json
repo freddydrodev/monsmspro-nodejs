@@ -1,0 +1,33 @@
+{
+  "name": "@freddydrodev/monsmspro",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup && npm publish --access public"
+  },
+  "keywords": [],
+  "author": "Diomande Dro Freddy Junior",
+  "license": "ISC",
+  "devDependencies": {
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "dependencies": {
+    "redaxios": "^0.5.1",
+    "zod": "^3.24.2"
+  }
+}
