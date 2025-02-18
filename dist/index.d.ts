@@ -233,8 +233,8 @@ declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
     phoneNumber: string;
     length?: number | undefined;
     adminKey?: string | null | undefined;
-    mode?: "NUMERIC" | "ALPHABET" | "ALPHA_NUMERIC" | undefined;
     senderId?: string | null | undefined;
+    mode?: "NUMERIC" | "ALPHABET" | "ALPHA_NUMERIC" | undefined;
     appName?: string | null | undefined;
 }>;
 declare const verifyOTPSchema: z.ZodObject<{
