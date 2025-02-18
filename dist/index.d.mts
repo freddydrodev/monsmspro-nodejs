@@ -86,6 +86,131 @@ declare class CampainModel extends BaseModel {
     create: ModelMethodType<typeof createCampain>;
 }
 
+declare const createContact: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    contacts: z.ZodDefault<z.ZodArray<z.ZodObject<{
+        phone: z.ZodString;
+        name: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, "strip", z.ZodTypeAny, {
+        phone: string;
+        name?: string | null | undefined;
+        firstName?: string | null | undefined;
+        lastName?: string | null | undefined;
+        sex?: "M" | "F" | null | undefined;
+    }, {
+        phone: string;
+        name?: string | null | undefined;
+        firstName?: string | null | undefined;
+        lastName?: string | null | undefined;
+        sex?: "M" | "F" | null | undefined;
+    }>, "many">>;
+}>, "strip", z.ZodTypeAny, {
+    apiKey: string;
+    contacts: {
+        phone: string;
+        name?: string | null | undefined;
+        firstName?: string | null | undefined;
+        lastName?: string | null | undefined;
+        sex?: "M" | "F" | null | undefined;
+    }[];
+    adminKey?: string | null | undefined;
+}, {
+    apiKey: string;
+    adminKey?: string | null | undefined;
+    contacts?: {
+        phone: string;
+        name?: string | null | undefined;
+        firstName?: string | null | undefined;
+        lastName?: string | null | undefined;
+        sex?: "M" | "F" | null | undefined;
+    }[] | undefined;
+}>;
+declare const getContactList: z.ZodObject<z.objectUtil.extendShape<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    count: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    page: z.ZodOptional<z.ZodNullable<z.ZodNumber>>;
+    sort: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+}>, {
+    orderBy: z.ZodDefault<z.ZodEnum<["firstName", "lastName", "name", "phone", "sex", "createdAt"]>>;
+}>, "strip", z.ZodTypeAny, {
+    sort: "asc" | "desc";
+    apiKey: string;
+    orderBy: "name" | "phone" | "firstName" | "lastName" | "sex" | "createdAt";
+    adminKey?: string | null | undefined;
+    count?: number | null | undefined;
+    page?: number | null | undefined;
+}, {
+    apiKey: string;
+    sort?: "asc" | "desc" | undefined;
+    adminKey?: string | null | undefined;
+    count?: number | null | undefined;
+    page?: number | null | undefined;
+    orderBy?: "name" | "phone" | "firstName" | "lastName" | "sex" | "createdAt" | undefined;
+}>;
+declare const updateContact: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    id: z.ZodString;
+    name: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    phone: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+}>, "strip", z.ZodTypeAny, {
+    apiKey: string;
+    id: string;
+    adminKey?: string | null | undefined;
+    name?: string | null | undefined;
+    phone?: string | null | undefined;
+    firstName?: string | null | undefined;
+    lastName?: string | null | undefined;
+    sex?: "M" | "F" | null | undefined;
+}, {
+    apiKey: string;
+    id: string;
+    adminKey?: string | null | undefined;
+    name?: string | null | undefined;
+    phone?: string | null | undefined;
+    firstName?: string | null | undefined;
+    lastName?: string | null | undefined;
+    sex?: "M" | "F" | null | undefined;
+}>;
+declare const deleteContact: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    contactIds: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+}>, "strip", z.ZodTypeAny, {
+    apiKey: string;
+    contactIds: string[];
+    adminKey?: string | null | undefined;
+}, {
+    apiKey: string;
+    adminKey?: string | null | undefined;
+    contactIds?: string[] | undefined;
+}>;
+
+declare class ContactModel extends BaseModel {
+    private path;
+    create: ModelMethodType<typeof createContact>;
+    list: ModelMethodType<typeof getContactList>;
+    delete: ModelMethodType<typeof deleteContact>;
+    update: ModelMethodType<typeof updateContact>;
+}
+
+declare class OfferModel extends BaseModel {
+    private path;
+    credit: ModelMethodTypeWithoutArgs<any>;
+}
+
 declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
     apiKey: z.ZodString;
     adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -203,10 +328,12 @@ declare class UserModel extends BaseModel {
 declare class MonSMSPRO {
     private baseUrl;
     private apiKey;
-    otp: OtpModel;
     user: UserModel;
+    offer: OfferModel;
+    otp: OtpModel;
     sender: SenderModel;
     campain: CampainModel;
+    contact: ContactModel;
     constructor(apiKey: string);
 }
 

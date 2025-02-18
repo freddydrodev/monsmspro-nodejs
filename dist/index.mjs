@@ -68,6 +68,37 @@ var CampainModel = class extends BaseModel {
   }
 };
 
+// src/models/Contact.ts
+var ContactModel = class extends BaseModel {
+  constructor() {
+    super(...arguments);
+    this.path = "/contact";
+    this.create = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/create")(args);
+    });
+    this.list = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/list")(args);
+    });
+    this.delete = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/delete")(args);
+    });
+    this.update = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/" + args.id + "/campain")(args);
+    });
+  }
+};
+
+// src/models/Offer.ts
+var OfferModel = class extends BaseModel {
+  constructor() {
+    super(...arguments);
+    this.path = "/offer";
+    this.credit = () => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/list")();
+    });
+  }
+};
+
 // src/models/OTP.ts
 var OtpModel = class extends BaseModel {
   constructor() {
@@ -112,16 +143,23 @@ var UserModel = class extends BaseModel {
 
 // src/index.ts
 var MonSMSPRO = class {
+  // TODO: ADD GROUPE
+  // TODO: ADD TEMPLATE
   constructor(apiKey) {
     this.baseUrl = "https://rest.monsmspro.com/api";
     this.apiKey = apiKey;
-    this.otp = new OtpModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
     this.user = new UserModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
+    this.offer = new OfferModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
+    this.otp = new OtpModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
     this.sender = new SenderModel({
       apiKey: this.apiKey,
       baseUrl: this.baseUrl
     });
     this.campain = new CampainModel({
+      apiKey: this.apiKey,
+      baseUrl: this.baseUrl
+    });
+    this.contact = new ContactModel({
       apiKey: this.apiKey,
       baseUrl: this.baseUrl
     });

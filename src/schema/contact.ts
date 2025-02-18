@@ -22,6 +22,7 @@ export const getContactList = baseListSchema.extend({
 export const getContact = baseSchema.extend({});
 
 export const updateContact = baseSchema.extend({
+  id: z.string(),
   name: z.string().trim().nullish(),
   firstName: z.string().trim().nullish(),
   lastName: z.string().trim().nullish(),
