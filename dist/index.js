@@ -90,6 +90,17 @@ var BaseModel = class {
   }
 };
 
+// src/models/Campain.ts
+var CampainModel = class extends BaseModel {
+  constructor() {
+    super(...arguments);
+    this.path = "/campain";
+    this.create = (args) => __async(this, null, function* () {
+      return yield this.callApi(this.path + "/create")(args);
+    });
+  }
+};
+
 // src/models/OTP.ts
 var OtpModel = class extends BaseModel {
   constructor() {
@@ -140,6 +151,10 @@ var MonSMSPRO = class {
     this.otp = new OtpModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
     this.user = new UserModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
     this.sender = new SenderModel({
+      apiKey: this.apiKey,
+      baseUrl: this.baseUrl
+    });
+    this.campain = new CampainModel({
       apiKey: this.apiKey,
       baseUrl: this.baseUrl
     });

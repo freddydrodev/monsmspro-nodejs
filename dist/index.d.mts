@@ -15,6 +15,77 @@ type ModelMethodTypeWithoutArgs<K = any> = () => Promise<ApiResponse<K>>;
 type ModelMethodType<T extends ZodObject<any>, K = any> = ModelMethodTypeWithArgs<T, K> | ModelMethodTypeWithoutArgs<K>;
 type BaseModelCallApiType<T extends ZodObject<any>, K = any> = (path: string) => ModelMethodType<T, K>;
 
+declare class BaseModel {
+    protected apiKey: string;
+    protected baseUrl: string;
+    protected axios: typeof Axios;
+    constructor(args: ModelBaseArgs);
+    protected callApi: BaseModelCallApiType<any, any>;
+}
+
+declare const createCampain: z.ZodObject<z.objectUtil.extendShape<{
+    apiKey: z.ZodString;
+    adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, {
+    name: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    contacts: z.ZodDefault<z.ZodArray<z.ZodObject<{
+        phone: z.ZodString;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        phone: z.ZodString;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        phone: z.ZodString;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, z.ZodTypeAny, "passthrough">>, "many">>;
+    groupsIds: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    text: z.ZodString;
+    senderId: z.ZodOptional<z.ZodNullable<z.ZodOptional<z.ZodNullable<z.ZodString>>>>;
+    type: z.ZodDefault<z.ZodOptional<z.ZodNullable<z.ZodEnum<["SMS", "FLASH"]>>>>;
+    forceSenderId: z.ZodOptional<z.ZodNullable<z.ZodBoolean>>;
+}>, "strip", z.ZodTypeAny, {
+    type: "SMS" | "FLASH" | null;
+    apiKey: string;
+    contacts: z.objectOutputType<{
+        phone: z.ZodString;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, z.ZodTypeAny, "passthrough">[];
+    groupsIds: string[];
+    text: string;
+    adminKey?: string | null | undefined;
+    name?: string | null | undefined;
+    senderId?: string | null | undefined;
+    forceSenderId?: boolean | null | undefined;
+}, {
+    apiKey: string;
+    text: string;
+    type?: "SMS" | "FLASH" | null | undefined;
+    adminKey?: string | null | undefined;
+    name?: string | null | undefined;
+    contacts?: z.objectInputType<{
+        phone: z.ZodString;
+        firstName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        lastName: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+        sex: z.ZodOptional<z.ZodNullable<z.ZodEnum<["M", "F"]>>>;
+    }, z.ZodTypeAny, "passthrough">[] | undefined;
+    groupsIds?: string[] | undefined;
+    senderId?: string | null | undefined;
+    forceSenderId?: boolean | null | undefined;
+}>;
+
+declare class CampainModel extends BaseModel {
+    private path;
+    create: ModelMethodType<typeof createCampain>;
+}
+
 declare const getOTPSchema: z.ZodObject<z.objectUtil.extendShape<{
     apiKey: z.ZodString;
     adminKey: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -54,14 +125,6 @@ declare const verifyOTPSchema: z.ZodObject<{
     otp: string;
     phoneNumber?: string | null | undefined;
 }>;
-
-declare class BaseModel {
-    protected apiKey: string;
-    protected baseUrl: string;
-    protected axios: typeof Axios;
-    constructor(args: ModelBaseArgs);
-    protected callApi: BaseModelCallApiType<any, any>;
-}
 
 declare class OtpModel extends BaseModel {
     private path;
@@ -143,6 +206,7 @@ declare class MonSMSPRO {
     otp: OtpModel;
     user: UserModel;
     sender: SenderModel;
+    campain: CampainModel;
     constructor(apiKey: string);
 }
 

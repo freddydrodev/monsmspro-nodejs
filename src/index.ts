@@ -1,3 +1,4 @@
+import { CampainModel } from "./models/Campain";
 import { OtpModel } from "./models/OTP";
 import { SenderModel } from "./models/Sender";
 import { UserModel } from "./models/User";
@@ -13,6 +14,8 @@ export class MonSMSPRO {
 
   public sender: SenderModel;
 
+  public campain: CampainModel;
+
   constructor(apiKey: string) {
     this.apiKey = apiKey;
 
@@ -21,6 +24,11 @@ export class MonSMSPRO {
     this.user = new UserModel({ apiKey: this.apiKey, baseUrl: this.baseUrl });
 
     this.sender = new SenderModel({
+      apiKey: this.apiKey,
+      baseUrl: this.baseUrl,
+    });
+
+    this.campain = new CampainModel({
       apiKey: this.apiKey,
       baseUrl: this.baseUrl,
     });
