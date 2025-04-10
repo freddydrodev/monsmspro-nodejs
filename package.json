@@ -19,10 +19,6 @@
     "url": "https://github.com/freddydrodev/monsmspro-nodejs.git"
   },
   "homepage": "https://docs.monsms.pro",
-  "devDependencies": {
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3"
-  },
   "pnpm": {
     "ignoredBuiltDependencies": [
       "esbuild"
@@ -30,6 +26,10 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "devDependencies": {
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "redaxios": "^0.5.1",

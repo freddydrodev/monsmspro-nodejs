@@ -1,4 +1,4 @@
-import { ModelMethodType } from "@/types";
+import { ModelMethodType, ModelMethodTypeWithoutArgs } from "@/types";
 
 import { BaseModel } from "./base";
 
@@ -10,8 +10,8 @@ export class SenderModel extends BaseModel {
   public create: ModelMethodType<typeof createSender> = async (args) =>
     await this.callApi(this.path + "/create")(args);
 
-  public list: ModelMethodType<typeof getSenderList> = async (args) =>
-    await this.callApi(this.path + "/list")(args);
+  public list: ModelMethodTypeWithoutArgs<any> = async () =>
+    await (this.callApi(this.path + "/list") as ModelMethodTypeWithoutArgs)();
 
   public campains: ModelMethodType<typeof getSender> = async (args) =>
     await this.callApi(this.path + "/" + args.id + "/campain")(args);
